@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="../static/css/surveillance.css">
+
+	<title>Video Surveillance</title>
+</head>
+<body>
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<img src="../static/imgs/PerpSpot Logo.png" alt="">
+			<span class="text">PerpSpot</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/dashboard">
+					<i class='bx bx-home-alt' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="/register-criminal">
+					<i class='bx bx-edit'></i>
+					<span class="text">Register Criminal</span>
+				</a>
+			</li>
+			<li>
+				<a href="/photo-matching">
+					<i class='bx bx-images'></i>
+					<span class="text">Photo Matching</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/video-surveillance">
+					<i class='bx bx-camera-movie' ></i>
+					<span class="text">Video Surveillance</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="/" class="logout">
+					<i class='bx bx-log-out'></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Video Surveillance</h1>
+				</div>
+			</div>
+
+			<div class="container">
+        <div id="recorder">
+          <button id="record">Record</button>
+          <button id="stop">Stop</button>
+          <a id="download"></a>
+          <script type="text/javascript" src="{{ url_for('static', filename='recorder.js') }}"></script>      
+        </div>
+        <img id="video" src="{{ url_for('video_viewer') }}">
+
+        <div class="table-data">
+          <div class="order">
+            <div class="head">
+              <h3>Spotted Criminals</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>01-10-2021</td>
+                  <td>
+                    <p>Gustavo Fring</p>
+                  </td>
+                  <td>Pantang</td>
+                  <td><button class="action">View Report</button></td>
+                </tr>
+                <tr>
+                  <td>01-10-2021</td>
+                  <td>
+                    <p>Gustavo Fring</p>
+                  </td>
+                  <td>Pantang</td>
+                  <td><button class="action">View Report</button></td>
+                </tr>
+                <tr>
+                  <td>01-10-2021</td>
+                  <td>
+                    <p>Gustavo Fring</p>
+                  </td>
+                  <td>Pantang</td>
+                  <td><button class="action">View Report</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+</body>
+</html>

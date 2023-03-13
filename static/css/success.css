@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    text-align: center;
+}
+
+img {
+    width: 500px;
+    height: auto;
+}
+
+h2 {
+    padding: 30px;
+    font-size: 50px;
+    color: #000740;
+}
+
+p {
+    font-size: 20px;
+    color: #000740;
+    margin-bottom: 20px;
+}
+
+.btn {
+    margin: 50px;
+    display: inline-block;
+    padding: 0.9rem 1.9rem;
+    color: #fff !important;
+    background-color: #000740;
+    border-radius: 16px;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: 0.3s;
+  }

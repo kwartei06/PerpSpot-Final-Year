@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="../static/css/matching.css">
+
+	<title>View Criminal Info</title>
+</head>
+<body>
+
+
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<img src="../static/imgs/PerpSpot Logo.png" alt="">
+			<span class="text">PerpSpot</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/dashboard">
+					<i class='bx bx-home-alt' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a href="/register-criminal">
+					<i class='bx bx-edit'></i>
+					<span class="text">Register Criminal</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/photo-matching">
+					<i class='bx bx-images'></i>
+					<span class="text">Photo Matching</span>
+				</a>
+			</li>
+			<li>
+				<a href="/video-surveillance">
+					<i class='bx bx-camera-movie' ></i>
+					<span class="text">Video Surveillance</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="/" class="logout">
+					<i class='bx bx-log-out'></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<section id="content">
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Photo Matching</h1>
+				</div>
+			</div>
+
+            <div class="container">
+                <input type="file" name="uploadfile" id="uploadfile" hidden="hid
+                ">
+                <button type="button" id="uploadbtn">Select Picture</button>
+                <div class="image-preview" id="imagePreview">
+                    <img src="" alt="Image Preview" class="image-preview__image">
+                    <span class="image-preview__default-text">Image Preview</span>
+                </div>
+                <a href="#" class="proceed">
+					<span class="text">Proceed to Photo Matching</span>
+				</a>
+            </div>
+            <script>
+                const uploadbtn = document.getElementById("uploadbtn"); 
+                const uploadfile = document.getElementById("uploadfile");
+                const previewContainer = document.getElementById("imagePreview");
+                const previewImage = previewContainer.querySelector(".image-preview__image");
+                const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+
+                // Substituting the default btn for custom btn
+                uploadbtn.addEventListener("click", function() {
+                    uploadfile.click();
+                });
+
+                // Uploading images from the pc
+                uploadfile.addEventListener("change", function() {
+                    const file = this.files[0];
+
+                    if (file) {
+                        const reader = new FileReader();
+
+                        previewDefaultText.display = "none";
+                        previewImage.style.display = "block";
+
+                        reader.addEventListener("load", function() {
+                            previewImage.setAttribute("src", this.result);
+                        });
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewDefaultText.display = null;
+                        previewImage.style.display = null;
+                        previewImage.setAttribute("src", "");
+                    }
+
+                });
+
+            </script>
+		</main>
+	</section>
+</body>
+</html>

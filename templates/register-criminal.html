@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Boxicons -->
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- My CSS -->
+	<link rel="stylesheet" href="../static/css/register.css">
+
+	<title>Register Criminal</title>
+</head>
+<body>
+
+
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="#" class="brand">
+			<img src="../static/imgs/PerpSpot Logo.png" alt="">
+			<span class="text">PerpSpot</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="/dashboard">
+					<i class='bx bx-home-alt' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="/register-criminal">
+					<i class='bx bx-edit'></i>
+					<span class="text">Register Criminal</span>
+				</a>
+			</li>
+			<li>
+				<a href="/photo-matching">
+					<i class='bx bx-images'></i>
+					<span class="text">Photo Matching</span>
+				</a>
+			</li>
+			<li>
+				<a href="/video-surveillance">
+					<i class='bx bx-camera-movie' ></i>
+					<span class="text">Video Surveillance</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="/" class="logout">
+					<i class='bx bx-log-out'></i>
+					<span class="text">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
+
+
+
+	<!-- CONTENT -->
+	<section id="content">
+
+		<!-- MAIN -->
+		<main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Register Criminal</h1>
+				</div>
+			</div>
+
+			<div class="container">
+				<form action="" method="post">
+					<div class="content">
+						<div class="input-fields">
+							<div class="input-box">
+								<label for="name">Full Name</label>
+								<input type="text" placeholder="Full Name" name="name" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Date of Birth</label>
+								<input type="date" placeholder="Date of Birth" name="name" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Nationality</label>
+								<input type="text" placeholder="Nationality" name="nationality" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Address</label>
+								<input type="text" placeholder="Address" name="address">
+							</div>
+							<div class="input-box">
+								<label for="name">Contact</label>
+								<input type="number" placeholder="Contact" name="contact" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Height (in feet)</label>
+								<input type="number" placeholder="Height" name="height" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Weight (in kg)</label>
+								<input type="number" placeholder="Weight" name="weight" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Offense(s)</label>
+								<input type="text" placeholder="Separate multiple with comma" name="contact" required>
+							</div>
+							<div class="input-box">
+								<label for="name">Date of Arrest</label>
+								<input type="date" placeholder="Date of Arrest" name="name" required>
+							</div>
+
+							<button class="nextBtn">
+								<span class="btnNext">Proceed to Take Photo</span>
+							</button>
+						</div>
+					</div>
+				</form> 
+			</div>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->
+	
+
+	<script src="../static/js/register.js"></script>
+</body>
+</html>
