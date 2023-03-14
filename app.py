@@ -165,13 +165,18 @@ def validate_login(staffid, password):
     # Execute a SELECT statement to retrieve the hashed password for the given staffid
     cursor.execute('''SELECT password FROM users WHERE staff_id = %s''', (staffid,))
     result = cursor.fetchone()
-    print(result)
+    print("Result: ", result)
 
     if result:
         # If a row was found for the given staffid, verify the password
-        hashed_password = result[0].encode('utf-8')
-        print(hashed_password)
-        if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+        # hashed_password = result[0].encode('utf-8')
+        # print("Hashed password: ", hashed_password)
+        # if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+        #     # If the password is correct, grant access to the system
+        #     return "Login successful"
+        user_password = result[0]
+        print("Hashed password: ", user_password)
+        if (password == user_password):
             # If the password is correct, grant access to the system
             return "Login successful"
         else:
@@ -179,7 +184,8 @@ def validate_login(staffid, password):
             return "Incorrect password"
     else:
         # If no row was found for the given staffid, return an error message
-        return "Staff ID not found"
+
+        return "staff_id_not_found"
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
