@@ -16,6 +16,13 @@
 			<form action="/login" method="POST">
 				<h2 class="title">Welcome</h2>
 				<p>Please enter your credentials to login.</p>
+				
+				{% if error_message %}
+				<div class="error-message">
+					{{ error_message }}
+				</div>
+				{% endif %}
+				<br>
            		<div class="input-div one">
            		   <div class="i">
            		   		<i class="fas fa-user"></i>

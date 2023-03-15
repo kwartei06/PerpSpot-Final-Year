@@ -6,6 +6,7 @@ from flask_mysqldb import MySQL
 import mysql.connector
 from camera import VideoCamera
 import bcrypt
+import re
 
 app = Flask(__name__)
 
@@ -135,6 +136,7 @@ def view():
 #Login Route
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
+    error_message = ""
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -149,7 +151,18 @@ def login():
         else:
             # If the login is unsuccessful, redirect back to the login page with an error message
             return redirect(url_for('login', error=result))
+        
 
+# Validation Functions
+# StaffID validation using Regular Expression
+def validate_staffid(staffid):
+    regex = r'^[A-Za-z0-9]{10}$'
+    if re.match(regex, staffid):
+        if staffid.startswith("GPPSA"):
+           return True
+    return False
+
+# Login Validation
 def validate_login(staffid, password):
 
     mysql_connection = mysql.connector.connect(
@@ -158,6 +171,12 @@ def validate_login(staffid, password):
     password="",
     database="perpspot_db"
     )
+
+    # StaffID input validation        
+    if not validate_staffid(staffid):
+        error_message = ""
+        error_message = "Invalid Staff ID."
+        return render_template("login.html", error_message=error_message)
 
     # Create a cursor object
     cursor = mysql_connection.cursor()
@@ -185,7 +204,8 @@ def validate_login(staffid, password):
     else:
         # If no row was found for the given staffid, return an error message
 
-        return "staff_id_not_found"
+        return render_template("login.html", error_message=error_message)
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
