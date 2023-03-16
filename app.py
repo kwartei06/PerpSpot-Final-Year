@@ -118,6 +118,7 @@ def submit_success():
 # Dashboard
 @app.route('/dashboard')
 def dashboard():
+    
     return render_template('dashboard.html')
 
 @app.route('/register-criminal')
