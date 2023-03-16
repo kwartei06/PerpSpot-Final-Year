@@ -16,13 +16,17 @@
 			<form action="/login" method="POST">
 				<h2 class="title">Welcome</h2>
 				<p>Please enter your credentials to login.</p>
-				
-				{% if error_message %}
-				<div class="error-message">
-					{{ error_message }}
-				</div>
+
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class="error">
+					{% for message in messages %}
+						<p>{{ message }}</p>
+					{% endfor %}
+					</div>
 				{% endif %}
-				<br>
+				{% endwith %}
+				
            		<div class="input-div one">
            		   <div class="i">
            		   		<i class="fas fa-user"></i>
@@ -48,3 +52,6 @@
     <script type="text/javascript" src="../static/js/login.js"></script>
 </body>
 </html>
+
+
+i want to store the value in an error message variable so that i can display it in an HTML login form

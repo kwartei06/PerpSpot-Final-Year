@@ -1,4 +1,4 @@
-from flask import Flask,render_template, Response, session, jsonify, request, redirect, url_for
+from flask import Flask,render_template, Response, session, jsonify, request, redirect, url_for, flash
 from datetime import datetime
 from views import views
 from auth import auth
@@ -6,7 +6,6 @@ from flask_mysqldb import MySQL
 import mysql.connector
 from camera import VideoCamera
 import bcrypt
-import re
 
 app = Flask(__name__)
 
@@ -92,6 +91,10 @@ if mysql_connection.is_connected():
 # cursor.close()
 
 
+# Specifying the secret key for the app
+
+app.secret_key = "PerpSpot-Final-Year" 
+
 # Creating flask instance
 # registering blueprints
 app.register_blueprint(views, url_prefix='/')
@@ -136,7 +139,7 @@ def view():
 #Login Route
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    error_message = ""
+    # error_message = ""
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -144,23 +147,36 @@ def login():
         staffid = request.form['staffid']
         password = request.form['password']
         result = validate_login(staffid, password)
+        check_staffid = validate_staffid(staffid)
 
         if result == "Login successful":
             # If the login is successful, redirect to the main dashboard
             return redirect(url_for('dashboard'))
         else:
             # If the login is unsuccessful, redirect back to the login page with an error message
-            return redirect(url_for('login', error=result))
+            if check_staffid == False:
+                # error_message = "Invalid Staff ID"
+                flash("Invalid Staff ID")
+            else:
+                return redirect(url_for('dashboard'))
+            
+
+            return redirect(url_for('login'))
         
 
 # Validation Functions
 # StaffID validation using Regular Expression
 def validate_staffid(staffid):
-    regex = r'^[A-Za-z0-9]{10}$'
-    if re.match(regex, staffid):
-        if staffid.startswith("GPPSA"):
-           return True
-    return False
+    # checking if it is exactly 10 characters long
+    if len(staffid) != 10:
+        return False
+    # checking if it starts with "GPPSA"
+    if not staffid.startswith("GPPSA"):
+        return False
+    # checking if the last 5 characters are all digits.
+    if not staffid[5:].isdigit() or len(staffid[5:]) != 5:
+        return False
+    return True
 
 # Login Validation
 def validate_login(staffid, password):
@@ -174,9 +190,7 @@ def validate_login(staffid, password):
 
     # StaffID input validation        
     if not validate_staffid(staffid):
-        error_message = ""
-        error_message = "Invalid Staff ID."
-        return render_template("login.html", error_message=error_message)
+        return render_template("login.html")
 
     # Create a cursor object
     cursor = mysql_connection.cursor()
@@ -204,7 +218,7 @@ def validate_login(staffid, password):
     else:
         # If no row was found for the given staffid, return an error message
 
-        return render_template("login.html", error_message=error_message)
+        return render_template("login.html")
 
 
 if __name__ == '__main__':
