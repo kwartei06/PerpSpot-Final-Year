@@ -116,23 +116,24 @@ textarea.input {
   transform: translateY(0);
 }
 
-.btn {
-  padding: 0.6rem 1.3rem;
-  background-color: #fff;
-  border: 2px solid #fafafa;
-  font-size: 0.95rem;
+.submit {
+  text-align: center;
+  width: 50%;
+  margin-block: 40px;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  background-color: #e4e4e6;
+  border-radius: 15px;
+  transition: 0.5s;
   color: #000740;
-  line-height: 1;
-  border-radius: 10px;
-  outline: none;
-  cursor: pointer;
-  transition: 1s;
-  text-decoration: none;
 }
 
-.btn:hover {
-  background-color: transparent;
-  color: #fff;
+.submit:hover {
+  background-color: #555abd;
+  color: white;
+  border: 2px solid white;
 }
 
 .input-container span {
@@ -146,6 +147,12 @@ textarea.input {
   pointer-events: none;
   z-index: 500;
 }
+
+.input-container option {
+  color: #333;
+}
+
+
 
 .input-container span:before,
 .input-container span:after {
@@ -206,6 +213,20 @@ textarea.input {
   bottom: -77px;
   right: 50px;
   opacity: 0.3;
+}
+
+.flash-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 20px;
+  position:relative;
+  border: 2px solid rgb(184, 3, 3);
+  border-radius: 20px;
+  margin: 20px 80px;
+  clear:left;
+  height:auto;
+  z-index: 0;
+  text-align:center
 }
 
 

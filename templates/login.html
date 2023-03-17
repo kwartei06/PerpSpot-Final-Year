@@ -18,7 +18,7 @@
 				<p>Please enter your credentials to login.</p>
 
 				{% with messages = get_flashed_messages() %}
-				{% if messages %}
+				{r% if messages %}
 					<div class="error">
 					{% for message in messages %}
 						<p>{{ message }}</p>

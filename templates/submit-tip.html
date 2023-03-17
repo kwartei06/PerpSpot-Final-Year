@@ -11,6 +11,19 @@
     ></script>
   </head>
   <body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for message in messages %}
+          <div class="flash-message">
+            <p>{{ message }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% endwith %}
+  
+    
     <div class="container">
       <div class="form">
         <div class="contact-info">
@@ -26,7 +39,7 @@
 
         <div class="contact-form">
 
-          <form action="index.html" autocomplete="off">
+          <form action="/submit-tip" method="POST" autocomplete="off">
             <h3 class="title">Submit Tip</h3>
             <div class="input-container">
               <input type="text" name="name" class="input" />
@@ -39,18 +52,31 @@
               <span>Email</span>
             </div>
             <div class="input-container">
-              <input type="tel" name="phone" class="input" />
+              <input type="text" name="phone" class="input" />
               <label for="">Phone</label>
               <span>Phone</span>
             </div>
+            <div class="input-container">
+              <select name="category" class="input">
+                <option value="" disabled selected>Select Category</option>
+                <option value="Assault">Assault</option>
+                <option value="Burglary">Burglary</option>
+                <option value="Drug Offense">Drug Offense</option>
+                <option value="Fraud">Fraud</option>
+                <option value="Homicide">Homicide</option>
+                <option value="Sexual Offense">Sexual Offense</option>
+                <option value="Theft">Theft</option>
+                <option value="Vandalism">Vandalism</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            
             <div class="input-container textarea">
               <textarea name="message" class="input"></textarea>
               <label for="">Message</label>
               <span>Message</span>
             </div>
-            <div>
-              <a href="/submit-success" class="btn">Submit</a>
-            </div>
+            <input type="submit" name="submit" class="submit">
           </form>
         </div>
       </div>

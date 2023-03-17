@@ -6,6 +6,7 @@ from flask_mysqldb import MySQL
 import mysql.connector
 from camera import VideoCamera
 import bcrypt
+import re
 
 app = Flask(__name__)
 
@@ -100,14 +101,58 @@ app.secret_key = "PerpSpot-Final-Year"
 app.register_blueprint(views, url_prefix='/')
 app.register_blueprint(auth, url_prefix='/')
 
-#Home page route
+
+# **************** WEB PAGES ******************************
+
+# Home page route
 @app.route('/')
 def home():
     return render_template('home.html')
 
-
-@app.route('/submit-tip')
+# Submit Tip page
+@app.route('/submit-tip', methods=['POST'])
 def submit_tip():
+    full_name = request.form['name']
+    email = request.form['email']
+    phone = request.form['phone']
+    category = request.form['category']
+    message = request.form['message']
+
+    # Validating Full Name
+    if not re.match(r'^[A-Z][a-z]+\s[A-Z][a-z]+$', full_name):
+        flash('Full Name should contain at least two separate words, and each word should start with a capital letter.')
+        return redirect(url_for('submit_tip'))
+
+    # # Validating Email
+    # elif not re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$', email):
+    #     flash('Please enter a valid email address.')
+    #     return redirect(url_for('submit_tip'))
+
+    # Validating Phone
+    elif not re.match(r'^\d{9}$', phone):
+        flash('Please enter the last nine(9) digits of your phone number.')
+        return redirect(url_for('submit_tip'))
+
+
+    # create a cursor
+    cursor = mysql_connection.cursor()
+
+    # insert the data into the database
+    sql = "INSERT INTO tips (full_name, email, phone, category, message) VALUES (%s, %s, %s, %s, %s)"
+    val = (full_name, email, phone, category, message)
+    cursor.execute(sql, val)
+
+    # check if the query was successful
+    if cursor.rowcount == 1:
+        print('Submission success!')
+        mysql_connection.commit()
+        cursor.close()
+        return redirect(url_for('submit_success'))
+    else:
+        print('Submission failed!')
+        mysql_connection.rollback()
+        cursor.close()
+
     return render_template('submit-tip.html')
 
 
@@ -115,10 +160,11 @@ def submit_tip():
 def submit_success():
     return render_template('submit-success.html')
 
+
 # Dashboard
 @app.route('/dashboard')
 def dashboard():
-    
+
     return render_template('dashboard.html')
 
 @app.route('/register-criminal')
@@ -182,12 +228,12 @@ def validate_staffid(staffid):
 # Login Validation
 def validate_login(staffid, password):
 
-    mysql_connection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="perpspot_db"
-    )
+    # mysql_connection = mysql.connector.connect(
+    # host="localhost",
+    # user="root",
+    # password="",
+    # database="perpspot_db"
+    # )
 
     # StaffID input validation        
     if not validate_staffid(staffid):
