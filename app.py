@@ -1,4 +1,4 @@
-from flask import Flask,render_template, Response, session, jsonify, request, redirect, url_for, flash
+from flask import Flask,render_template, Response, session, jsonify, request, redirect, g, url_for, flash
 from datetime import datetime
 from views import views
 from auth import auth
@@ -179,11 +179,22 @@ def matching():
 def surveillance():
     return render_template('video-surveillance.html')
 
+# ***************   VIEWING SUBMITTED TIPS ******************
+@app.route('/view-tips')
+def view_tips():
+    cursor = mysql_connection.cursor()
+    cursor.execute("SELECT * FROM tips")
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template('view-tips.html', tips=data)
+
+
+# ******************    VIEWING CRIMINAL INFO ***********************
 @app.route('/view-info')
 def view():
     return render_template('view-info.html')
 
-#Login Route
+#   ********************** LOGIN ROUTE ***********************
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     # error_message = ""

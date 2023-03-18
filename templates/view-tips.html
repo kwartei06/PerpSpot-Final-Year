@@ -7,9 +7,9 @@
 	<!-- Boxicons -->
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<!-- My CSS -->
-	<link rel="stylesheet" href="../static/css/dashboard.css">
+	<link rel="stylesheet" href="../static/css/view-tips.css">
 
-	<title>PerpSopt - Dashboard</title>
+	<title>PerpSopt - View Tips</title>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
 			<span class="text">PerpSpot</span>
 		</a>
 		<ul class="side-menu top">
-			<li class="active">
+      <li>
 				<a href="/dashboard">
 					<i class='bx bx-home-alt' ></i>
 					<span class="text">Dashboard</span>
@@ -45,7 +45,7 @@
 					<span class="text">Video Surveillance</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="/view-tips">
 					<i class='bx bx-edit' ></i>
 					<span class="text">Submitted Tips</span>
@@ -71,7 +71,7 @@
 		<nav>
 			<form action="#">
 				<div class="form-input">
-					<input type="search" placeholder="Search...">
+					<input type="search" placeholder="Search by Category...">
 					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
 				</div>
 			</form>
@@ -82,70 +82,50 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Dashboard</h1>
+					<h1>Submitted Tips</h1>
 				</div>
 			</div>
 
 			<div class="table-data">
 				<div class="order">
-					<div class="head">
+					<!-- <div class="head">
 						<h3>Recently Captured</h3>
-					</div>
+					</div> -->
 					<table>
 						<thead>
 							<tr>
-								<th>User</th>
-								<th>Date</th>
-								<th>Location</th>
-								<th>Investigation Status</th>
+								<th>Full Name</th>
+								<th>E-mail Address</th>
+								<th>Phone Number (+233)</th>
+								<th>Category</th>
+                                <th>Message</th>
+                                <th>TimeStamp</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>
-									<img src="../static/imgs/people.png">
-									<p>Gustavo Fring</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>Pantang</td>
-								<td><span class="status completed">Completed</span></td>
+                                {% for row in tips %}
+                                <tr>
+                                    <td>{{ row[1] }}</td>
+                                    <td>{{ row[2] }}</td>
+                                    <td>{{ row[3] }}</td>
+                                    <td>{{ row[4] }}</td>
+                                    <td>{{ row[5] }}</td>
+                                    <td>{{ row[6] }}</td>
+                                </tr>
+                                {% endfor %}
 							</tr>
 							<tr>
-								<td>
-									<img src="../static/imgs/people.png">
-									<p>Saul Goodman</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>Dzorwulu</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="../static/imgs/people.png">
-									<p>Jesse Pinkman</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>Tema</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="../static/imgs/people.png">
-									<p>Walter White</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>Ashongman</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>
-							<tr>
-								<td>
-									<img src="../static/imgs/people.png">
-									<p>Peter Griffin</p>
-								</td>
-								<td>01-10-2021</td>
-								<td>Kasoa</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>
+								<td>Kofi Ntim</td>
+								<td>kofintim@gmail.com</td>
+								<td>558746824</td>
+								<td>Assault</td>
+                                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Quas velit dignissimos sapiente deserunt, 
+                                    quaerat incidunt dolores ratione perferendis provident obcaecati,
+                                    sit sequi nisi illo asperiores odit, laboriosam omnis temporibus totam.</td>
+                                <td>2023-03-17 23:23:35</td>
+                            </tr>
 						</tbody>
 					</table>
 				</div>
@@ -154,8 +134,6 @@
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
-	
 
-	<script src="../static/js/dashboard.js"></script>
 </body>
 </html>
