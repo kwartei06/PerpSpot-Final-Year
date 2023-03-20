@@ -291,63 +291,109 @@ body {
 }
 
 
-.container form {
-	position: relative;
-	margin-top: 16px;
-	min-height: 490px;
-	background-color: #ffffff;
-	
+.container .form {
+	margin-top: 30px;
 }
-
-.container form .content{
-	margin-top: 10px;
-}
-
-.container form .input-fields {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	gap: 20px;
-}
-
-
-.container form .input-box {
-	display: flex;
-	width: calc(100% / 3 - 15px);
-	flex-direction: column;
-}
-
-.input-box label {
-	font-size: 12px;
-	font-weight: 500;
-}
-.input-box input {
-	height: 40px;
-	margin: 8px 0;
-	border-radius: 5px; 
-	padding: 0 15px;
-	border: 2px solid #0a0a0a;
-
-} 
-
-.container form .nextBtn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 45px;
-	max-width: 200px;
+.form .input-box {
 	width: 100%;
-	border: none;
+	margin-top: 20px;
+}
+.input-box label {
+	color: #333;
+}
+.form :where(.input-box input, .select-box) {
+	position: relative;
+	height: 50px;
+	width: 100%;
 	outline: none;
-	border-radius: 10px;
-	color: #fff;
-	margin: 85px 0;
-	background-color: #000748;
+	font-size: 1rem;
+	color: #707070;
+	margin-top: 8px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	padding: 0 15px;
+}
+.input-box input:focus {
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.form .column {
+	display: flex;
+	column-gap: 15px;
+}
+.form .gender-box {
+	margin-top: 20px;
+}
+.gender-box h3 {
+	color: #333;
+	font-size: 1rem;
+	font-weight: 400;
+	margin-bottom: 8px;
+}
+.form :where(.gender-option, .gender) {
+	display: flex;
+	align-items: center;
+	column-gap: 50px;
+	flex-wrap: wrap;
+}
+.form .gender {
+	column-gap: 5px;
+}
+.gender input {
+	accent-color: rgb(130, 106, 251);
+}
+.form :where(.gender input, .gender label) {
 	cursor: pointer;
-
+}
+.gender label {
+	color: #707070;
+}
+.address :where(input, .select-box) {
+	margin-top: 15px;
 }
 
+
+
+.select-box select {
+	height: 100%;
+	width: 100%;
+	outline: none;
+	border: none;
+	color: #707070;
+	font-size: 1rem;
+}
+
+.button {
+	height: 55px;
+	width: 50%;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 500;
+	margin-top: 30px;
+	margin-left: 150px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+	background: #000748;
+}
+
+.button:hover {
+	background: #a0a9f8;
+}
+
+.flash-message {
+	background-color: #b9fcc2;
+	color: rgb(3, 184, 33);
+	padding: 10px;
+	position:relative;
+	border: 2px solid rgb(3, 184, 33);
+	border-radius: 20px;
+	margin: 20px 80px;
+	clear:left;
+	height:auto;
+	z-index: 0;
+	text-align:center
+  }
 
 #content main {
 	width: 100%;

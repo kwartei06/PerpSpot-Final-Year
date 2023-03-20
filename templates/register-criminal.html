@@ -21,12 +21,6 @@
 			<span class="text">PerpSpot</span>
 		</a>
 		<ul class="side-menu top">
-			<li>
-				<a href="/dashboard">
-					<i class='bx bx-home-alt' ></i>
-					<span class="text">Dashboard</span>
-				</a>
-			</li>
 			<li class="active">
 				<a href="/register-criminal">
 					<i class='bx bx-edit'></i>
@@ -54,7 +48,7 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="/" class="logout">
+				<a href="/logout" class="logout">
 					<i class='bx bx-log-out'></i>
 					<span class="text">Logout</span>
 				</a>
@@ -70,6 +64,17 @@
 
 		<!-- MAIN -->
 		<main>
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+			  <div class="flash-messages">
+				{% for message in messages %}
+				  <div class="flash-message">
+					<p>{{ message }}</p>
+				  </div>
+				{% endfor %}
+			  </div>
+			{% endif %}
+			{% endwith %}
 			<div class="head-title">
 				<div class="left">
 					<h1>Register Criminal</h1>
@@ -77,59 +82,138 @@
 			</div>
 
 			<div class="container">
-				<form action="" method="post">
-					<div class="content">
-						<div class="input-fields">
-							<div class="input-box">
-								<label for="name">Full Name</label>
-								<input type="text" placeholder="Full Name" name="name" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Date of Birth</label>
-								<input type="date" placeholder="Date of Birth" name="name" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Nationality</label>
-								<input type="text" placeholder="Nationality" name="nationality" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Address</label>
-								<input type="text" placeholder="Address" name="address">
-							</div>
-							<div class="input-box">
-								<label for="name">Contact</label>
-								<input type="number" placeholder="Contact" name="contact" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Height (in feet)</label>
-								<input type="number" placeholder="Height" name="height" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Weight (in kg)</label>
-								<input type="number" placeholder="Weight" name="weight" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Offense(s)</label>
-								<input type="text" placeholder="Separate multiple with comma" name="contact" required>
-							</div>
-							<div class="input-box">
-								<label for="name">Date of Arrest</label>
-								<input type="date" placeholder="Date of Arrest" name="name" required>
-							</div>
+				<form action="/register-criminal" method="POST" class="form">
+				<h3>Personal Info</h3>
+				<div class="column">
+					<div class="input-box">
+					<label>Full Name</label>
+					<input type="text" name="full_name" placeholder="Enter full name" required />
+					</div>
+					<div class="input-box">
+					<label>Birth of Date</label>
+					<input type="date" name="birth_date" placeholder="Enter birth date" required />
+					</div>
+				</div>
 
-							<button class="nextBtn">
-								<span class="btnNext">Proceed to Take Photo</span>
-							</button>
+				<div class="column">
+		
+					<div class="input-box">
+					<label>Nationality</label>
+					<input type="text" name="nationality" placeholder="Enter nationality" required />
+					</div>
+					<div class="input-box">
+					<label>Gender</label>
+					<div class="select-box">
+						<select id="gender" name="gender">
+						<option hidden>Gender</option>
+						<option>Male</option>
+						<option>Female</option>
+						</select>
+					</div>
+					</div>
+				</div>
+
+				<div class="column">
+					<div class="input-box">
+					<label>Phone Number</label>
+					<input type="text" name="phone_number" placeholder="Enter phone number" required />
+					</div>
+					<div class="input-box">
+					<label>Height (in cm)</label>
+					<input type="number" name="height" placeholder="Enter height" required />
+					</div>
+					<div class="input-box">
+					<label>Weight (in kg)</label>
+					<input type="number" name="weight" placeholder="Enter weight" required />
+					</div>
+				</div>
+				<br><br>
+
+
+				<div class="input-box address">
+					<h3>Record</h3>
+					<!-- <input type="text" placeholder="Enter street address" required />
+					<input type="text" placeholder="Enter street address line 2" required /> -->
+					<div class="column">
+					<div class="input-box">
+						<label>Crime Category</label>
+						<div class="select-box">
+						<select id="crime_category" name="crimeCategory">
+							<option hidden>Crime Category</option>
+							<option value="Property">Property Crime</option>
+							<option value="Violent">Violent Crime</option>
+							<option value="Drugs">Drug Crime</option>
+							<option value="White_Collar">White-Collar Crime</option>
+							<option value="Cyber">Cyber Crime</option>
+							<option value="Sexual">Sexual Crime</option>
+							<option value="Traffic_Violation">Traffic Violation</option>
+						</select>
 						</div>
 					</div>
-				</form> 
+					<div class="input-box">
+						<label>Crime Type</label>
+						<div class="select-box">
+						<select id="crime_type" name="crimeType">
+						</select>
+						</div>
+					</div>
+					</div>
+					<div class="column">
+					<div class="input-box">
+						<label>Date of Offense</label>
+						<input type="date" name="date_of_offense" required />
+					</div>
+					<div class="input-box">
+						<label>Location of Committed Offense</label>
+						<input type="text" name="location_of_offense" placeholder="Location" required />
+					</div>
+					</div>
+				</div>
+				<br><br>
+				<input type="submit" name="register" value="Register" class="button">
+				</form>
+  
 			</div>
 		</main>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
-	
 
-	<script src="../static/js/register.js"></script>
+  <script>
+    // Define the crime types for each category
+    const crimeTypes = {
+      Property: ["Theft", "Vandalism", "Burglary", "Arson", "Illegal Mining"],
+      Violent: ["Murder", "Assault", "Battery", "Domestic Violence", "Human Trafficking"],
+      Drugs: ["Drug Possession", "Drug Trafficking", "Drug Manufacturing"],
+      White_Collar: ["Fraud", "Embezzlement", "Insider Trading"],
+      Cyber: ["Hacking", "Identity Theft", "Online Scams"],
+      Sexual: ["Rape", "Sexual Assault", "Child Pornography"],
+      Traffic_Violation: ["Speeding", "Reckless Driving", "Driving under drug/alcohol influence"]
+  
+    };
+
+    // Get the "Crime Category" and "Crime Type" select elements
+    const crimeCategorySelect = document.getElementById("crime_category");
+    const crimeTypeSelect = document.getElementById("crime_type");
+
+    // Populate the "Crime Type" select element based on the selected "Crime Category"
+    crimeCategorySelect.addEventListener("change", function() {
+      // Clear the previous options
+      crimeTypeSelect.innerHTML = "";
+      
+      // Get the selected crime category
+      const selectedCategory = crimeCategorySelect.value;
+      
+      // Populate the crime types for the selected category
+      crimeTypes[selectedCategory].forEach(function(crimeType) {
+        const option = document.createElement("option");
+        option.value = crimeType;
+        option.text = crimeType;
+        crimeTypeSelect.add(option);
+      });
+    });
+
+
+  </script>
 </body>
 </html>

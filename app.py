@@ -104,12 +104,12 @@ app.register_blueprint(auth, url_prefix='/')
 
 # **************** WEB PAGES ******************************
 
-# Home page route
+# ********* Home page route *************
 @app.route('/')
 def home():
     return render_template('home.html')
 
-# Submit Tip page
+# ********* Submit Tip page **************
 @app.route('/submit-tip', methods=['POST'])
 def submit_tip():
     full_name = request.form['name']
@@ -161,15 +161,45 @@ def submit_success():
     return render_template('submit-success.html')
 
 
-# Dashboard
-@app.route('/dashboard')
-def dashboard():
 
-    return render_template('dashboard.html')
-
-@app.route('/register-criminal')
+@app.route('/register-criminal', methods=['POST'])
 def register():
-    return render_template('register-criminal.html')
+    if not 'logged_in' in session and session['logged_in']:
+        return redirect(url_for('login'))
+    else:
+        # Retrieve form data
+        full_name = request.form['full_name']
+        birth_date = request.form['birth_date']
+        nationality = request.form['nationality']
+        gender = request.form['gender']
+        phone_number = request.form['phone_number']
+        height = request.form['height']
+        weight = request.form['weight']
+        crime_category = request.form['crimeCategory']
+        crime_type = request.form['crimeType']
+        date_of_offense = request.form['date_of_offense']
+        location_of_offense = request.form['location_of_offense']
+
+        # Validate form data
+        # ...
+
+        # Insert data into database table
+        cursor = mysql_connection.cursor()
+        sql = "INSERT INTO criminals (full_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (full_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
+        cursor.execute(sql, val)
+
+        # check if the query was successful
+        if cursor.rowcount == 1:
+            flash('Registration success!')
+            mysql_connection.commit()
+            cursor.close()
+            return redirect(url_for('register'))
+        else:
+            print('Registration failed!')
+            mysql_connection.rollback()
+            cursor.close()
+        return render_template(url_for('register'))
 
 @app.route('/photo-matching')
 def matching():
@@ -194,10 +224,21 @@ def view_tips():
 def view():
     return render_template('view-info.html')
 
+def get_staffid(staffid):
+
+    cursor = mysql_connection.cursor()
+    cursor.execute("SELECT id FROM users WHERE username=%s", (staffid))
+    row = cursor.fetchone()
+    mysql_connection.close()
+
+    if row:
+        return row[0]
+    else:
+        return None
+
 #   ********************** LOGIN ROUTE ***********************
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    # error_message = ""
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -207,23 +248,54 @@ def login():
         result = validate_login(staffid, password)
         check_staffid = validate_staffid(staffid)
 
+
         if result == "Login successful":
-            # If the login is successful, redirect to the main dashboard
-            return redirect(url_for('dashboard'))
+            # If the login is successful, create a session and redirect to the dashboard
+            # session["loggedin"] = True
+            # session["staffid"] = result["staffid"]
+
+            session['loggedin'] = True
+            session['staffid'] = staffid
+
+            # Record login time in the database
+            login_time = datetime.now()
+            record_login_time(staffid, login_time)
+
+
+            return redirect(url_for('register'))
         else:
             # If the login is unsuccessful, redirect back to the login page with an error message
             if check_staffid == False:
                 # error_message = "Invalid Staff ID"
                 flash("Invalid Staff ID")
             else:
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('register'))
             
 
             return redirect(url_for('login'))
         
 
-# Validation Functions
-# StaffID validation using Regular Expression
+@app.route('/logout', methods = ['POST', 'GET'])
+def logout():
+    # Get the staff ID from the session
+    staffid = session.get('staffid')
+
+    # Record logout time in the database
+    logout_time = datetime.now()
+    record_logout_time(staffid, logout_time)
+
+    # Clear the session
+    session.pop("staffid", None)
+
+    # return render_template(url_for('login'))
+    return render_template('home.html')
+
+
+
+        
+
+# **************************** VALIDATION FUNCTIONS ******************************
+# **************** StaffID validation using Regular Expression ********************
 def validate_staffid(staffid):
     # checking if it is exactly 10 characters long
     if len(staffid) != 10:
@@ -236,16 +308,8 @@ def validate_staffid(staffid):
         return False
     return True
 
-# Login Validation
+# ******************  Login Validation *******************
 def validate_login(staffid, password):
-
-    # mysql_connection = mysql.connector.connect(
-    # host="localhost",
-    # user="root",
-    # password="",
-    # database="perpspot_db"
-    # )
-
     # StaffID input validation        
     if not validate_staffid(staffid):
         return render_template("login.html")
@@ -277,6 +341,27 @@ def validate_login(staffid, password):
         # If no row was found for the given staffid, return an error message
 
         return render_template("login.html")
+
+
+# ******** Recording Login Time ***********
+def record_login_time(staffid, login_time):
+    cursor = mysql_connection.cursor()
+    # Insert a new row into the login_logout table
+    sql = "INSERT INTO login_logout (staffid, login_time) VALUES (%s, %s)"
+    val = (staffid, login_time)
+    cursor.execute(sql, val)
+    mysql_connection.commit()
+
+# ******** Recording Logout Time **************
+def record_logout_time(staffid, logout_time):
+    cursor = mysql_connection.cursor()
+    print("Record logout time function called with staffid: {}, logout_time: {}".format(staffid, logout_time))
+    sql = "UPDATE login_logout SET logout_time = %s WHERE staffid = %s AND login_time = (SELECT MAX(login_time) FROM login_logout WHERE staffid = %s)"
+    val = (logout_time, staffid, staffid)
+    cursor.execute(sql, val)
+    mysql_connection.commit()
+    print("Logout time recorded successfully for staffid: {}".format(staffid))
+    
 
 
 if __name__ == '__main__':
