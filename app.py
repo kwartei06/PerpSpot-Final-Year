@@ -7,6 +7,15 @@ import mysql.connector
 from camera import VideoCamera
 import bcrypt
 import re
+import os
+import cv2
+import numpy as np
+import joblib
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from keras.utils import to_categorical
 
 app = Flask(__name__)
 
@@ -58,13 +67,6 @@ def video_viewer():
 
 
 
-# # Database Configuration
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = ''
-# app.config['MYSQL_DB'] = 'perpspot_db'
- 
-# mysql = MySQL(app)
 
 
 # Establish a connection to the MySQL database
@@ -168,7 +170,8 @@ def register():
         return redirect(url_for('login'))
     else:
         # Retrieve form data
-        full_name = request.form['full_name']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
         birth_date = request.form['birth_date']
         nationality = request.form['nationality']
         gender = request.form['gender']
@@ -185,9 +188,9 @@ def register():
 
         # Insert data into database table
         cursor = mysql_connection.cursor()
-        sql = "INSERT INTO criminals (full_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        val = (full_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
-        cursor.execute(sql, val)
+        sql = "INSERT INTO criminals (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        val = (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
+        cursor.execute(sql, val) 
 
         # check if the query was successful
         if cursor.rowcount == 1:
