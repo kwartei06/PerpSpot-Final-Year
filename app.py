@@ -283,7 +283,7 @@ def login():
 @app.route('/logout', methods=['POST', 'GET'])
 def logout():
     # Get the staff ID from the session
-    staffid = session.get('staffid')
+    staffid = session['staffid']
 
     # Record logout time in the database
     logout_time = datetime.now()
@@ -291,7 +291,7 @@ def logout():
 
     # Clear the session
     session['logged'] = False
-    session.pop("staffid", None)
+    session['staffid'] = None
 
     # return render_template(url_for('login'))
     return render_template('home.html')
