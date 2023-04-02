@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
 
 	<title>Video Surveillance</title>
 </head>
+
 <body>
 
 	<!-- SIDEBAR -->
@@ -34,13 +36,13 @@
 			</li>
 			<li class="active">
 				<a href="/video-surveillance">
-					<i class='bx bx-camera-movie' ></i>
+					<i class='bx bx-camera-movie'></i>
 					<span class="text">Video Surveillance</span>
 				</a>
 			</li>
 			<li>
 				<a href="/view-tips">
-					<i class='bx bx-edit' ></i>
+					<i class='bx bx-edit'></i>
 					<span class="text">Submitted Tips</span>
 				</a>
 			</li>
@@ -70,25 +72,25 @@
 			</div>
 
 			<div class="container">
-			<img src="{{ url_for('video_feed') }}" width="750" height="480">
+				<img src="{{ url_for('video_viewer') }}" width="750" height="480">
 
-        <div class="table-data">
-          <div class="order">
-            <div class="head">
-              <h3>Spotted Criminals</h3>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>First Name</th>
-				  <th>Last Name</th>
-                  <th>Location</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="scandata">
-                <!-- <tr>
+				<div class="table-data">
+					<div class="order">
+						<div class="head">
+							<h3>Spotted Criminals</h3>
+						</div>
+						<table>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Location</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody id="scandata">
+								<!-- <tr>
 					{% for log_entry in captured_log %}
 					<td>{{ first_name }}</td>
 					<td>{{ last_name }}</td>
@@ -113,68 +115,68 @@
                   <td>Pantang</td>
                   <td><button class="action">View Report</button></td>
                 </tr> -->
-              </tbody>
-            </table>
-          </div>
-        </div>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</main>
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document).ready(function () {
 			let lastcnt = 0;
 			let cnt;
 			chkNewScan();
-	 
+
 			function chkNewScan() {
 				countTodayScan();
 				setTimeout(chkNewScan, 1000);
 			}
-	 
+
 			function countTodayScan() {
 				$.ajax({
 					url: '/countTodayScan',
 					type: 'GET',
 					dataType: 'json',
-					success: function(data) {
+					success: function (data) {
 						cnt = data.rowcount;
 						if (cnt > lastcnt) {
 							reloadTable();
 						}
-	 
+
 						lastcnt = cnt;
 					},
-					error: function(result){
+					error: function (result) {
 						console.log('no result!')
 					}
 				})
 			}
-	 
+
 			function reloadTable() {
 				$.ajax({
 					url: '/loadData',
 					type: 'GET',
 					dataType: 'json',
-					success: function(response){
+					success: function (response) {
 						var tr = $("#scandata");
 						tr.empty();
-	 
-						$.each(response, function(index, item) {
+
+						$.each(response, function (index, item) {
 							if (item.length > 0) {
 								for (let i = 0; i < item.length; i++) {
-									tr.append('<tr>'+
-													'<td>'+item[i][1]+'</td>'+
-													'<td>'+item[i][2]+'</td>'+
-													'<td>'+item[i][3]+'</td>'+
-													'<td>'+item[i][4]+'</td>'+
-											   '</tr>');
+									tr.append('<tr>' +
+										'<td>' + item[i][1] + '</td>' +
+										'<td>' + item[i][2] + '</td>' +
+										'<td>' + item[i][3] + '</td>' +
+										'<td>' + item[i][4] + '</td>' +
+										'</tr>');
 								}
 							}
 						});
 					},
-					error: function(result){
+					error: function (result) {
 						console.log('no result!')
 					}
 				});
@@ -182,4 +184,5 @@
 		});
 	</script>
 </body>
+
 </html>

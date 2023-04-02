@@ -1,87 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Submit Tip</title>
-    <link rel="stylesheet" href="../static/css/submit-tip.css" />
-    <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <div class="flash-messages">
-        {% for message in messages %}
-          <div class="flash-message">
-            <p>{{ message }}</p>
-          </div>
-        {% endfor %}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit Tip</title>
+  <link rel="stylesheet" href="../static/css/submit-tip.css" />
+  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+    <div class="flash-message">
+      <p>{{ message }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+
+  <div class="container">
+    <div class="form">
+      <div class="contact-info">
+        <h3 class="title">Help Us Help You!</h3>
+        <p class="text">
+          We appreciate your willingness to share information with us. If you have any tips regarding criminal activity
+          or suspicious behavior, please don't hesitate to submit a tip. <br><br>
+          To submit a tip, simply fill out the form on this page with as much detail as possible. You may remain
+          anonymous, but providing your contact information can help us follow up with you for additional information.
+          <br><br>
+          Your cooperation is vital to keeping our community safe, and we thank you for your support. Let's work
+          together to make a positive difference!
+        </p>
+
+
       </div>
-    {% endif %}
-    {% endwith %}
-  
-    
-    <div class="container">
-      <div class="form">
-        <div class="contact-info">
-          <h3 class="title">Help Us Help You!</h3>
-          <p class="text">
-            We appreciate your willingness to share information with us. If you have any tips regarding criminal activity or suspicious behavior, please don't hesitate to submit a tip. <br><br>
-            To submit a tip, simply fill out the form on this page with as much detail as possible. You may remain anonymous, but providing your contact information can help us follow up with you for additional information. <br><br>
-            Your cooperation is vital to keeping our community safe, and we thank you for your support. Let's work together to make a positive difference!
-          </p>
 
-          
-        </div>
+      <div class="contact-form">
 
-        <div class="contact-form">
+        <form action="/submit-tip" method="POST" autocomplete="off">
+          <h3 class="title">Submit Tip</h3>
+          <div class="input-container">
+            <input type="text" name="name" required class="input" />
+            <label for="">Full Name</label>
+            <span>Full Name</span>
+          </div>
+          <div class="input-container">
+            <input type="email" required name="email" class="input" />
+            <label for="">Email</label>
+            <span>Email</span>
+          </div>
+          <div class="input-container">
+            <input type="tel" pattern="[0-9]*" required minlength="10" maxlength="10" name="phone" class="input" />
+            <label for="">Phone</label>
+            <span>Phone</span>
+          </div>
+          <div class="input-container">
+            <select name="category" required class="input">
+              <option value="" disabled selected>Select Category</option>
+              <option value="Assault">Assault</option>
+              <option value="Burglary">Burglary</option>
+              <option value="Drug Offense">Drug Offense</option>
+              <option value="Fraud">Fraud</option>
+              <option value="Homicide">Homicide</option>
+              <option value="Sexual Offense">Sexual Offense</option>
+              <option value="Theft">Theft</option>
+              <option value="Vandalism">Vandalism</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-          <form action="/submit-tip" method="POST" autocomplete="off">
-            <h3 class="title">Submit Tip</h3>
-            <div class="input-container">
-              <input type="text" name="name" class="input" />
-              <label for="">Full Name</label>
-              <span>Full Name</span>
-            </div>
-            <div class="input-container">
-              <input type="email" name="email" class="input" />
-              <label for="">Email</label>
-              <span>Email</span>
-            </div>
-            <div class="input-container">
-              <input type="text" name="phone" class="input" />
-              <label for="">Phone</label>
-              <span>Phone</span>
-            </div>
-            <div class="input-container">
-              <select name="category" class="input">
-                <option value="" disabled selected>Select Category</option>
-                <option value="Assault">Assault</option>
-                <option value="Burglary">Burglary</option>
-                <option value="Drug Offense">Drug Offense</option>
-                <option value="Fraud">Fraud</option>
-                <option value="Homicide">Homicide</option>
-                <option value="Sexual Offense">Sexual Offense</option>
-                <option value="Theft">Theft</option>
-                <option value="Vandalism">Vandalism</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            
-            <div class="input-container textarea">
-              <textarea name="message" class="input"></textarea>
-              <label for="">Message</label>
-              <span>Message</span>
-            </div>
-            <input type="submit" name="submit" class="submit">
-          </form>
-        </div>
+          <div class="input-container textarea">
+            <textarea required maxlength="500" name="message" class="input"></textarea>
+            <label for="">Message</label>
+            <span>Message</span>
+          </div>
+          <input type="submit" name="submit" class="submit">
+        </form>
       </div>
     </div>
+  </div>
 
-    <script src="../static/js/submit.js"></script>
-  </body>
+  <script src="../static/js/submit.js"></script>
+</body>
+
 </html>

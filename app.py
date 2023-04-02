@@ -120,7 +120,13 @@ def submit_tip():
     message = request.form['message']
 
     # Validating Full Name
-    if not re.match(r'^[A-Z][a-z]+\s[A-Z][a-z]+$', full_name):
+    # Wrong
+    # if not re.match(r'^[A-Z][a-z]+\s[A-Z][a-z]+$', full_name):
+    #     flash('Full Name should contain at least two separate words, and each word should start with a capital letter.')
+    #     return redirect(url_for('submit_tip'))
+    # Remove the spaces at the beginning and end of the full name
+    full_name = full_name.strip()
+    if not " " in full_name:
         flash('Full Name should contain at least two separate words, and each word should start with a capital letter.')
         return redirect(url_for('submit_tip'))
 
@@ -130,9 +136,9 @@ def submit_tip():
     #     return redirect(url_for('submit_tip'))
 
     # Validating Phone
-    elif not re.match(r'^\d{9}$', phone):
-        flash('Please enter the last nine(9) digits of your phone number.')
-        return redirect(url_for('submit_tip'))
+    # elif not re.match(r'^\d{9}$', phone):
+    #     flash('Please enter the last nine(9) digits of your phone number.')
+    #     return redirect(url_for('submit_tip'))
 
     # create a cursor
     cursor = mysql_connection.cursor()
@@ -180,7 +186,7 @@ def register():
     # ...
     # Insert data into database table
     cursor = mysql_connection.cursor()
-    sql = "INSERT INTO criminals (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    sql = "INSERT INTO criminals (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)"
     val = (first_name, last_name, birth_date, nationality, gender, phone_number,
            height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
     cursor.execute(sql, val)
