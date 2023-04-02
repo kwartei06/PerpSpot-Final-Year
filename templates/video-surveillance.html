@@ -70,13 +70,7 @@
 			</div>
 
 			<div class="container">
-        <div id="recorder">
-          <button id="record">Record</button>
-          <button id="stop">Stop</button>
-          <a id="download"></a>
-          <script type="text/javascript" src="{{ url_for('static', filename='recorder.js') }}"></script>      
-        </div>
-        <img id="video" src="{{ url_for('video_viewer') }}">
+			<img src="{{ url_for('video_feed') }}" width="750" height="480">
 
         <div class="table-data">
           <div class="order">
@@ -87,18 +81,20 @@
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Name</th>
+                  <th>First Name</th>
+				  <th>Last Name</th>
                   <th>Location</th>
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>01-10-2021</td>
-                  <td>
-                    <p>Gustavo Fring</p>
-                  </td>
-                  <td>Pantang</td>
+              <tbody id="scandata">
+                <!-- <tr>
+					{% for log_entry in captured_log %}
+					<td>{{ first_name }}</td>
+					<td>{{ last_name }}</td>
+					<td>{{ timestamp }}</td>
+					<td>{{ location }}</td>
+					{% endfor %}
                   <td><button class="action">View Report</button></td>
                 </tr>
                 <tr>
@@ -116,7 +112,7 @@
                   </td>
                   <td>Pantang</td>
                   <td><button class="action">View Report</button></td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
           </div>
@@ -126,5 +122,64 @@
 		<!-- MAIN -->
 	</section>
 	<!-- CONTENT -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			let lastcnt = 0;
+			let cnt;
+			chkNewScan();
+	 
+			function chkNewScan() {
+				countTodayScan();
+				setTimeout(chkNewScan, 1000);
+			}
+	 
+			function countTodayScan() {
+				$.ajax({
+					url: '/countTodayScan',
+					type: 'GET',
+					dataType: 'json',
+					success: function(data) {
+						cnt = data.rowcount;
+						if (cnt > lastcnt) {
+							reloadTable();
+						}
+	 
+						lastcnt = cnt;
+					},
+					error: function(result){
+						console.log('no result!')
+					}
+				})
+			}
+	 
+			function reloadTable() {
+				$.ajax({
+					url: '/loadData',
+					type: 'GET',
+					dataType: 'json',
+					success: function(response){
+						var tr = $("#scandata");
+						tr.empty();
+	 
+						$.each(response, function(index, item) {
+							if (item.length > 0) {
+								for (let i = 0; i < item.length; i++) {
+									tr.append('<tr>'+
+													'<td>'+item[i][1]+'</td>'+
+													'<td>'+item[i][2]+'</td>'+
+													'<td>'+item[i][3]+'</td>'+
+													'<td>'+item[i][4]+'</td>'+
+											   '</tr>');
+								}
+							}
+						});
+					},
+					error: function(result){
+						console.log('no result!')
+					}
+				});
+			}
+		});
+	</script>
 </body>
 </html>

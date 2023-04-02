@@ -86,17 +86,20 @@
 				<h3>Personal Info</h3>
 				<div class="column">
 					<div class="input-box">
-					<label>Full Name</label>
-					<input type="text" name="full_name" placeholder="Enter full name" required />
+					<label>First Name</label>
+					<input type="text" name="first_name" placeholder="Enter first name" required />
 					</div>
 					<div class="input-box">
-					<label>Birth of Date</label>
-					<input type="date" name="birth_date" placeholder="Enter birth date" required />
+					<label>Last Name</label>
+					<input type="text" name="last_name" placeholder="Enter last name" required />
 					</div>
 				</div>
 
 				<div class="column">
-		
+					<div class="input-box">
+					<label>Birth of Date</label>
+					<input type="date" name="birth_date" placeholder="Enter birth date" required />
+					</div>		
 					<div class="input-box">
 					<label>Nationality</label>
 					<input type="text" name="nationality" placeholder="Enter nationality" required />
@@ -115,16 +118,16 @@
 
 				<div class="column">
 					<div class="input-box">
-					<label>Phone Number</label>
+					<label>Phone Number (+233)</label>
 					<input type="text" name="phone_number" placeholder="Enter phone number" required />
 					</div>
 					<div class="input-box">
 					<label>Height (in cm)</label>
-					<input type="number" name="height" placeholder="Enter height" required />
+					<input type="text" name="height" placeholder="Enter height" required />
 					</div>
 					<div class="input-box">
 					<label>Weight (in kg)</label>
-					<input type="number" name="weight" placeholder="Enter weight" required />
+					<input type="text" name="weight" placeholder="Enter weight" required />
 					</div>
 				</div>
 				<br><br>
@@ -132,8 +135,6 @@
 
 				<div class="input-box address">
 					<h3>Record</h3>
-					<!-- <input type="text" placeholder="Enter street address" required />
-					<input type="text" placeholder="Enter street address line 2" required /> -->
 					<div class="column">
 					<div class="input-box">
 						<label>Crime Category</label>
@@ -169,8 +170,9 @@
 					</div>
 					</div>
 				</div>
-				<br><br>
 				<input type="submit" name="register" value="Register" class="button">
+				</form>
+				<form action="/register-faces" method="POST">
 				</form>
   
 			</div>
