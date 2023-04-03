@@ -27,22 +27,16 @@ def dashboard():
 
 @views.route('/register-criminal')
 def register():
-    if session['logged'] is False:
-        return redirect(url_for('login'))
     return render_template('register-criminal.html')
 
 
 @views.route('/photo-matching')
 def matching():
-    if session['logged'] is False:
-        return redirect(url_for('login'))
     return render_template('photo-matching.html')
 
 
 @views.route('/video-surveillance')
 def surveillance():
-    if session['logged'] is False:
-        return redirect(url_for('login'))
     return render_template('video-surveillance.html')
 
 

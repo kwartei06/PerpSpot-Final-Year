@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Response, session, jsonify, request, redirect, g, url_for, flash
 from datetime import datetime
-from views import views
-from auth import auth
+# from views import views
+# from auth import auth
 from flask_mysqldb import MySQL
 import mysql.connector
 from camera import VideoCamera
@@ -66,6 +66,10 @@ def video_viewer():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+
+
+
+
 # Establish a connection to the MySQL database
 mysql_connection = mysql.connector.connect(
     host="localhost",
@@ -95,10 +99,10 @@ if mysql_connection.is_connected():
 
 app.secret_key = "PerpSpot-Final-Year"
 
-# Creating flask instance
-# registering blueprints
-app.register_blueprint(views, url_prefix='/')
-app.register_blueprint(auth, url_prefix='/')
+# # Creating flask instance
+# # registering blueprints
+# app.register_blueprint(views, url_prefix='/')
+# app.register_blueprint(auth, url_prefix='/')
 
 
 # **************** WEB PAGES ******************************
@@ -130,15 +134,6 @@ def submit_tip():
         flash('Full Name should contain at least two separate words, and each word should start with a capital letter.')
         return redirect(url_for('submit_tip'))
 
-    # # Validating Email
-    # elif not re.match(r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$', email):
-    #     flash('Please enter a valid email address.')
-    #     return redirect(url_for('submit_tip'))
-
-    # Validating Phone
-    # elif not re.match(r'^\d{9}$', phone):
-    #     flash('Please enter the last nine(9) digits of your phone number.')
-    #     return redirect(url_for('submit_tip'))
 
     # create a cursor
     cursor = mysql_connection.cursor()
@@ -167,49 +162,61 @@ def submit_success():
     return render_template('submit-success.html')
 
 
-@app.route('/register-criminal', methods=['POST'])
+@app.route('/register-criminal', methods=['POST', 'GET'])
 def register():
-    # Retrieve form data
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    birth_date = request.form['birth_date']
-    nationality = request.form['nationality']
-    gender = request.form['gender']
-    phone_number = request.form['phone_number']
-    height = request.form['height']
-    weight = request.form['weight']
-    crime_category = request.form['crimeCategory']
-    crime_type = request.form['crimeType']
-    date_of_offense = request.form['date_of_offense']
-    location_of_offense = request.form['location_of_offense']
-    # Validate form data
-    # ...
-    # Insert data into database table
-    cursor = mysql_connection.cursor()
-    sql = "INSERT INTO criminals (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)"
-    val = (first_name, last_name, birth_date, nationality, gender, phone_number,
-           height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
-    cursor.execute(sql, val)
-    # check if the query was successful
-    if cursor.rowcount == 1:
-        flash('Registration success!')
-        mysql_connection.commit()
-        # cursor.close()
-        return redirect(url_for('register'))
-    else:
-        print('Registration failed!')
-        mysql_connection.rollback()
-        # cursor.close()
-    return render_template(url_for('register'))
+    if request.method == 'GET':
+        if 'logged' in session and session['logged']:
+            # User is logged in, allow access to the route
+            return render_template('register-criminal.html')
+        else:
+            # User is not logged in, redirect to login page
+            return redirect('/login')
+    elif request.method == 'POST':
+        # Retrieve form data
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        birth_date = request.form['birth_date']
+        nationality = request.form['nationality']
+        gender = request.form['gender']
+        phone_number = request.form['phone_number']
+        height = request.form['height']
+        weight = request.form['weight']
+        crime_category = request.form['crimeCategory']
+        crime_type = request.form['crimeType']
+        date_of_offense = request.form['date_of_offense']
+        location_of_offense = request.form['location_of_offense']
+        # Validate form data
+        # ...
+        # Insert data into database table
+        cursor = mysql_connection.cursor()
+        sql = "INSERT INTO criminals (first_name, last_name, birth_date, nationality, gender, phone_number, height, weight, crime_category, crime_type, date_of_offense, location_of_offense) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)"
+        val = (first_name, last_name, birth_date, nationality, gender, phone_number,
+            height, weight, crime_category, crime_type, date_of_offense, location_of_offense)
+        cursor.execute(sql, val)
+        # check if the query was successful
+        if cursor.rowcount == 1:
+            flash('Registration success!')
+            mysql_connection.commit()
+            # cursor.close()
+            return redirect(url_for('register'))
+        else:
+            print('Registration failed!')
+            mysql_connection.rollback()
+            # cursor.close()
+        return render_template(url_for('register'))
 
 
 @app.route('/photo-matching')
 def matching():
+    if session['logged'] is False:
+        return redirect(url_for('login'))
     return render_template('photo-matching.html')
 
 
 @app.route('/video-surveillance')
 def surveillance():
+    if session['logged'] is False:
+        return redirect(url_for('login'))
     return render_template('video-surveillance.html')
 
 # ***************   VIEWING SUBMITTED TIPS ******************
@@ -217,11 +224,19 @@ def surveillance():
 
 @app.route('/view-tips')
 def view_tips():
-    cursor = mysql_connection.cursor()
-    cursor.execute("SELECT * FROM tips")
-    data = cursor.fetchall()
-    # cursor.close()
-    return render_template('view-tips.html', tips=data)
+    if request.method == 'GET':
+        if 'logged' in session and session['logged']:
+            # User is logged in, allow access to the route
+            return render_template('view-tips.html')
+        else:
+            # User is not logged in, redirect to login page
+            return redirect('/login')
+    else:
+        cursor = mysql_connection.cursor()
+        cursor.execute("SELECT * FROM tips")
+        data = cursor.fetchall()
+        # cursor.close()
+        return render_template('view-tips.html', tips=data)
 
 
 # ******************    VIEWING CRIMINAL INFO ***********************
